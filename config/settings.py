@@ -13,6 +13,7 @@ MEM_SELF = os.path.join(MEM_DIR, "self.txt")
 # ====================== Discord ===================
 DISCORD_TOKEN = os.environ.get("DISCORD_TOKEN")
 ERP_CHANNEL_ID = 1537239216335880232
+OWNER_ID = 1498061475535654942
 
 # ====================== Claude API ================
 CLAUDE_API_KEY = os.environ.get("CLAUDE_API_KEY") or os.environ.get("ANTHROPIC_API_KEY")
