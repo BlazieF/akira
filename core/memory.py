@@ -31,19 +31,20 @@ class MemoryManager:
         with open(path, 'w', encoding='utf-8') as f:
             f.write(memory[:MAX_MEMORY_LENGTH])  # лимит памяти
     
+    def delete_user_memory(self, user_id: int) -> bool:
+        """Удаляет память о пользователе"""
+        path = os.path.join(MEM_USERS, f"{user_id}.txt")
+        if os.path.exists(path):
+            os.remove(path)
+            return True
+        return False
+    
     def get_channel_history(self, channel_id: int) -> List[Dict]:
         """Получает историю канала"""
         path = os.path.join(MEM_CHANNELS, f"{channel_id}.json")
         if os.path.exists(path):
             with open(path, 'r', encoding='utf-8') as f:
-                content = f.read().strip()
-                if not content:
-                    return []
-                try:
-                    return json.loads(content)
-                except json.JSONDecodeError:
-                    # Повреждённый/пустой файл истории — начинаем с чистого листа
-                    return []
+                return json.load(f)
         return []
     
     def save_channel_history(self, channel_id: int, history: List[Dict]):
@@ -51,6 +52,14 @@ class MemoryManager:
         path = os.path.join(MEM_CHANNELS, f"{channel_id}.json")
         with open(path, 'w', encoding='utf-8') as f:
             json.dump(history[-20:], f, ensure_ascii=False, indent=2)  # храним последние 20
+    
+    def clear_channel_history(self, channel_id: int) -> bool:
+        """Очищает историю канала"""
+        path = os.path.join(MEM_CHANNELS, f"{channel_id}.json")
+        if os.path.exists(path):
+            os.remove(path)
+            return True
+        return False
     
     def get_self_memory(self) -> str:
         """Получает память бота о себе"""
